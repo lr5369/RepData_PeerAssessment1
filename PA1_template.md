@@ -4,7 +4,7 @@ Friday, November 13, 2015
 
 
 ## Loading and preprocessing the data
-Load Data:
+Loading Data:
 
 
 ```r
@@ -19,7 +19,7 @@ str(stepcount)
 ##  $ date    : Factor w/ 61 levels "2012-10-01","2012-10-02",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
 ```
-Process data:
+Preproocess data:
 
 ```r
 stepcount$date <- as.Date(stepcount$date, "%Y-%m-%d")
@@ -37,7 +37,7 @@ str(stepcount)
 ## What is mean total number of steps taken per day?
 For this part of the assignment, you can ignore the missing values in the dataset.
 
-Total number of steps taken per day:
+Total steps per day:
 
 ```r
 library(lattice)
@@ -73,6 +73,7 @@ median(total_steps$steps)
 ## What is the average daily activity pattern?
 
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis).
+
 Average Number of Steps:
 
 ```r
@@ -110,6 +111,7 @@ stepcount_NA
 ```
 
 Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+
 Fill Missing Values:
 
 ```r
@@ -126,18 +128,20 @@ for (i in 1:nrow(stepcount)) {
 }
 ```
 Create a new dataset that is equal to the original dataset but with the missing data filled in.
+
 New Dataset:
 
 ```r
-full_data <- stepcount
-full_data$steps <- na_fill
+new_data <- stepcount
+new_data$steps <- na_fill
 ```
 
 Make a histogram of the total number of steps taken each day.
-Histogram:
+
+Create a Histogram:
 
 ```r
-new_total_steps <- aggregate(steps ~ date, data = full_data, sum, na.rm = TRUE)
+new_total_steps <- aggregate(steps ~ date, data = new_data, sum, na.rm = TRUE)
 hist(new_total_steps$steps, breaks = 5, main = "Total steps by day", xlab = "steps per day", col = "blue")  
 ```
 
@@ -166,7 +170,8 @@ Not a significant difference in the mean and median when we filled in the missin
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
-By Day of the week:
+
+Group by Day of the week:
 
 
 ```r
