@@ -19,7 +19,9 @@ str(stepcount)
 ##  $ date    : Factor w/ 61 levels "2012-10-01","2012-10-02",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
 ```
-Preproocess data:
+
+Preproocessing data:
+
 
 ```r
 stepcount$date <- as.Date(stepcount$date, "%Y-%m-%d")
@@ -39,11 +41,14 @@ For this part of the assignment, you can ignore the missing values in the datase
 
 Total steps per day:
 
+
 ```r
 library(lattice)
 total_steps <- aggregate(steps ~ date, data = stepcount, sum, na.rm = TRUE)
 ```
+
 Draw a histogram of the total number of steps taken each day:
+
 
 ```r
 hist(total_steps$steps, breaks= 5, main = "Total steps by day", xlab = "total steps in a day", col = "red")
@@ -52,6 +57,7 @@ hist(total_steps$steps, breaks= 5, main = "Total steps by day", xlab = "total st
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 Display mean and median of the total number of steps taken per day:
+
 
 ```r
 mean(total_steps$steps)
@@ -75,6 +81,7 @@ median(total_steps$steps)
 Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis).
 
 Average Number of Steps:
+
 
 ```r
 time_series <- tapply(stepcount$steps, stepcount$interval, mean, na.rm = TRUE)
@@ -101,6 +108,7 @@ names(max_interval)
 
 Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
+
 ```r
 stepcount_NA <- sum(is.na(stepcount))
 stepcount_NA
@@ -112,7 +120,8 @@ stepcount_NA
 
 Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-Fill Missing Values:
+Fill in Missing Values:
+
 
 ```r
 avg_steps <- aggregate(steps ~ interval, data = stepcount, FUN = mean)
@@ -127,9 +136,11 @@ for (i in 1:nrow(stepcount)) {
   na_fill <- c(na_fill, steps)
 }
 ```
+
 Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 New Dataset:
+
 
 ```r
 new_data <- stepcount
@@ -138,7 +149,8 @@ new_data$steps <- na_fill
 
 Make a histogram of the total number of steps taken each day.
 
-Create a Histogram:
+Create a Histogram with new data set:
+
 
 ```r
 new_total_steps <- aggregate(steps ~ date, data = new_data, sum, na.rm = TRUE)
@@ -146,8 +158,11 @@ hist(new_total_steps$steps, breaks = 5, main = "Total steps by day", xlab = "ste
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-12-1.png) 
+
 Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+
 Mean:
+
 
 ```r
 mean(new_total_steps$steps)
@@ -156,7 +171,9 @@ mean(new_total_steps$steps)
 ```
 ## [1] 10766.19
 ```
+
 Median:
+
 
 ```r
 median(new_total_steps$steps)
@@ -166,8 +183,6 @@ median(new_total_steps$steps)
 ## [1] 10766.19
 ```
 Not a significant difference in the mean and median when we filled in the missing values. However, the frequency of days has changed. For example, for the mean the frequency previously was just 15 whereas in the new dataset, it is over 25.
-
-
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
